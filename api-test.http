@@ -4,5 +4,11 @@ Content-Type: application/json
 
 {
   "loginId": "user1",
-  "password": "pass01"
+  "password": "hashed_pw_1"
 }
+
+### 세션 GET TEST
+GET http://localhost:8080/api/users/me
+
+### Logout TEST
+POST http://localhost:8080/api/users/logout
