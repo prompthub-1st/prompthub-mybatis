@@ -26,4 +26,97 @@
     </resultMap>
 
 
+    <select id="selectAllPrompts" resultMap="promptResultMap">
+
+        SELECT
+            prompt_id,
+            user_id,
+            category_id,
+            title,
+            description,
+            content,
+            view_count,
+            created_at,
+            updated_at,
+            deleted_at
+        FROM prompts
+        WHERE deleted_at IS NULL
+        ORDER BY created_at DESC
+
+    </select>
+
+
+    <select id="selectPromptById" parameterType="long" resultMap="promptResultMap">
+
+        SELECT
+            prompt_id,
+            user_id,
+            category_id,
+            title,
+            description,
+            content,
+            view_count,
+            created_at,
+            updated_at,
+            deleted_at
+        FROM prompts
+        WHERE prompt_id = #{promptId} AND deleted_at IS NULL
+
+    </select>
+
+
+    <insert id="insertPrompt" parameterType="com.prompthub.prompt.model.dto.PromptDTO"
+            useGeneratedKeys="true" keyProperty="promptId">
+
+        INSERT INTO prompts
+        (
+        user_id,
+        category_id,
+        title,
+        description,
+        content
+        )
+        VALUES
+        (
+        #{userId},
+        #{categoryId},
+        #{title},
+        #{description},
+        #{content}
+        )
+
+    </insert>
+
+
+    <update id="updatePrompt" parameterType="com.prompthub.prompt.model.dto.PromptDTO">
+
+        UPDATE prompts
+        SET
+            category_id = #{categoryId},
+            title = #{title},
+            description = #{description},
+            content = #{content}
+        WHERE prompt_id = #{promptId}
+
+    </update>
+
+
+    <update id="deletePrompt" parameterType="long">
+
+        UPDATE prompts
+        SET deleted_at = NOW()
+        WHERE prompt_id = #{promptId}
+
+    </update>
+
+
+    <update id="increaseViewCount" parameterType="long">
+
+        UPDATE prompts
+        SET view_count = view_count + 1
+        WHERE prompt_id = #{promptId}
+
+    </update>
+
+
 </mapper>
