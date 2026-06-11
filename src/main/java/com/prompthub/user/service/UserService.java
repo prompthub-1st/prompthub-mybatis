@@ -14,12 +14,17 @@ public class UserService {
     }
 
     public UserDTO login(String id, String password) {
-        System.out.println("id = " + id);
+//        System.out.println("id = " + id);
         UserDTO user = userMapper.selectUserById(id);
-        System.out.println("조회 결과 = " + user);
+//        System.out.println("조회 결과 = " + user);
+        
 
         if(user == null) {
-            return null;
+            throw new RuntimeException("로그인 실패");
+        }
+
+        if(!user.getPasswordHash().equals(password)){
+            throw new RuntimeException("로그인 실패");
         }
 
         return user;
