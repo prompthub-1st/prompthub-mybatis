@@ -4,14 +4,14 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.prompthub.user.model.dao.UserMapper">
-    <select id="selectUserById" parameterType="string" resultType="UserDTO">
+    <select id="selectUserById" parameterType="string" resultType="com.prompthub.user.model.dto.UserDTO">
         SELECT
             user_id AS userId,
-            id,
+            login_id As loginId,
             password_hash AS passwordHash,
             nickname
         FROM users
-        WHERE id = #{id}
+        WHERE login_id = #{id}
     </select>
 
 </mapper>
