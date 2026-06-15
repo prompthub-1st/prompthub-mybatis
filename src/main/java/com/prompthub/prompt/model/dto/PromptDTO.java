@@ -16,6 +16,9 @@ public class PromptDTO {
     private Long userId;
     private Long categoryId;
 
+    private String categoryName;
+    private String userName;
+
     private String title;
     private String description;
     private String content;

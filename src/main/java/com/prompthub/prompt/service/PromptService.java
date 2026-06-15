@@ -2,7 +2,6 @@ package com.prompthub.prompt.service;
 
 import com.prompthub.prompt.model.dao.PromptMapper;
 import com.prompthub.prompt.model.dto.PromptDTO;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +20,6 @@ public class PromptService {
     }
 
     public PromptDTO selectPromptById(Long promptId) {
-
-        promptMapper.increaseViewCount(promptId);
-
         return promptMapper.selectPromptById(promptId);
     }
 
@@ -38,4 +34,6 @@ public class PromptService {
     public int deletePrompt(Long promptId) {
         return promptMapper.deletePrompt(promptId);
     }
+
+    public int increaseViewCount(Long promptId) { return promptMapper.increaseViewCount(promptId); }
 }

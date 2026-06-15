@@ -2,6 +2,7 @@ package com.prompthub.user.controller;
 
 import com.prompthub.user.model.dto.LoginRequest;
 import com.prompthub.user.model.dto.UserDTO;
+import com.prompthub.user.model.dto.UserResponse;
 import com.prompthub.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/auth")
 public class UserController {
 
     private final UserService userService;
@@ -35,20 +36,46 @@ public class UserController {
         session.setAttribute("loginUser", user);
 
         Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("data", user);
         result.put("message", "로그인 성공");
-        result.put("user", user);
 
         return result;
     }
 
     @GetMapping("/me")
-    public Object me(HttpSession session) {
-        return session.getAttribute("loginUser");
+    public Map<String, Object> me(HttpSession session) {
+
+        UserDTO user = (UserDTO) session.getAttribute("loginUser");
+
+        if (user == null) {
+            Map<String, Object> res = new HashMap<>();
+            res.put("success", false);
+            res.put("message", "로그인 상태가 아닙니다");
+            res.put("data", null);
+            return res;
+        }
+
+        UserResponse response = new UserResponse();
+        response.setUserId(user.getUserId());
+        response.setLoginId(user.getLoginId());
+        response.setNickname(user.getNickname());
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("success", true);
+        res.put("data", response);
+        res.put("message", "OK");
+
+        return res;
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpSession session){
+    public Map<String, Object> logout(HttpSession session){
         session.invalidate();
-        return ResponseEntity.ok().build();
+
+        return Map.of(
+                "success", true,
+                "message", "로그아웃 성공"
+        );
     }
 }

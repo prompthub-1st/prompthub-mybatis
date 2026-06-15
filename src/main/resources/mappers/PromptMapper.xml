@@ -13,6 +13,9 @@
         <result property="userId" column="user_id"/>
         <result property="categoryId" column="category_id"/>
 
+        <result property="categoryName" column="category_name"/>
+        <result property="userName" column="user_name"/>
+
         <result property="title" column="title"/>
         <result property="description" column="description"/>
         <result property="content" column="content"/>
@@ -29,19 +32,14 @@
     <select id="selectAllPrompts" resultMap="promptResultMap">
 
         SELECT
-            prompt_id,
-            user_id,
-            category_id,
-            title,
-            description,
-            content,
-            view_count,
-            created_at,
-            updated_at,
-            deleted_at
-        FROM prompts
-        WHERE deleted_at IS NULL
-        ORDER BY created_at DESC
+        p.*,
+        c.name AS category_name,
+        u.nickname AS user_name
+        FROM prompts p
+        JOIN categories c ON p.category_id = c.category_id
+        JOIN users u ON p.user_id = u.user_id
+        WHERE p.deleted_at IS NULL
+        ORDER BY p.created_at DESC
 
     </select>
 
@@ -49,18 +47,12 @@
     <select id="selectPromptById" parameterType="long" resultMap="promptResultMap">
 
         SELECT
-            prompt_id,
-            user_id,
-            category_id,
-            title,
-            description,
-            content,
-            view_count,
-            created_at,
-            updated_at,
-            deleted_at
-        FROM prompts
-        WHERE prompt_id = #{promptId} AND deleted_at IS NULL
+        p.*,
+        c.name AS category_name
+        FROM prompts p
+        JOIN categories c ON p.category_id = c.category_id
+        WHERE p.prompt_id = #{promptId}
+        AND p.deleted_at IS NULL
 
     </select>
 
