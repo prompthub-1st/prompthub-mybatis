@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prompthub.category.model.dao.CategoryMapper">
+
+    <resultMap id="categoryResultMap" type="com.prompthub.category.model.dto.CategoryDTO">
+        <id property="categoryId" column="category_id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="categoryResultMap">
+        SELECT category_id, name
+        FROM categories
+    </select>
+
+</mapper>
